@@ -1,15 +1,5 @@
 cDPA <- structure(function
-### A constrained dynamic programming algorithm (cDPA) can be used to
-### compute the best segmentation with respect to the Poisson
-### likelihood, subject to a constraint on the number of segments, and
-### the changes which must alternate: up, down, up, down, ...
-(count,
-### Integer vector of count data to segment.
- weight=rep(1, length(count)),
-### Data weights (normally this is the number of base pairs).
- maxSegments
-### Maximum number of segments to consider.
- ){
+(count,weight=rep(1, length(count)),maxSegments){
   stopifnot(is.numeric(count))
   stopifnot(is.numeric(weight))
   stopifnot(length(count) == length(weight))
