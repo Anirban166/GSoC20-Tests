@@ -19,7 +19,7 @@ micrograph <- microbenchmark(fit1(),fit2(),fit3(),fit4(),fit5(),fit6(),fit7(),fi
 testplot <- ggplot(micrograph)
 testplot + scale_x_continuous(trans = 'log2') + scale_y_continuous(trans = 'log2')
 
-autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSegPDPA (log-linear)")
+autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSegPDPA (log-linear)") + scale_y_continuous(trans='log10')
 
 #qplot(micrograph) + scale_y_log10() + scale_x_log10()
 
