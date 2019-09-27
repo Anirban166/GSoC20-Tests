@@ -13,7 +13,7 @@ pkgbuild::find_rtools(debug = TRUE)
 ---------------------------------------------
 install.packages("PeakSegOptimal")
 (in console)
-(from github:)
+(from github:) 
 if(!require(devtools))install.packages("devtools")
 devtools::install_github("tdhock/PeakSegOptimal")
 devtools::install_github("tdhock/PeakSegDP")
@@ -53,3 +53,4 @@ Unit: microseconds
 > fit <- PeakSegPDPA(data.vec, max.segments=3L)
 > fit <- cDPA(c(0, 10, 11, 1), maxSegments=3)
 --------------------------------------------- 
+ggplot2 methods : qplot, ggplot, autoplot
