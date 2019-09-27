@@ -54,3 +54,4 @@ Unit: microseconds
 > fit <- cDPA(c(0, 10, 11, 1), maxSegments=3)
 --------------------------------------------- 
 ggplot2 methods : qplot, ggplot, autoplot
+ 
