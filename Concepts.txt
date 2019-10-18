@@ -1,0 +1,27 @@
+Create a data frame:
+
+x >    SN Age Name
+    1  1  21 John
+    2  2  15 Dora
+ 
+> x<-data.frame("SN"=1:2,"Age"=c(21,15),"Name"=c("John","Dora"))
+> class(x)
+[1] "data.frame"
+----------------------------------------------------------------
+so for project we need function asymptoticTimings(fun(N)) to return
+a data.frame DF with numeric columns N (number of data) and T (time in seconds)
+x > DF N T
+> x<-data.frame("DF"=1:2,"N"=1:2,"T"=c(t1,t2)
+
+#Noisy empirical data - Meaningless extra data (noisy) obtained by observation (empirical)
+----------------------------- add to easy test ----------------
+Expected results of easy test:
+the cDPA results in 100-1000 microseconds or (0.0001 - 0.001 seconds) (quadratic) -> taking more time
+whereas PeakSegPDPA violin plots results in 10-100 (0.00001 - 0.0001 seconds) (log linear) -> taking less time
+
+sleep_for_a_minute <- function() { Sys.sleep(60) }
+
+gettime <- function() {  start_time <- Sys.time()  
+                                           fit1()  
+                                           end_time <- Sys.time()  
+                                           end_time-start_time }
