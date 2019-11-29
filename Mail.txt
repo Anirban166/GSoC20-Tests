@@ -1,4 +1,0 @@
-Dear Sir,
-Am an Undergraduate student currently pursuing B.Tech with CSE specialization and I recently ventured into your GuessCompx Package.Am very much interested in acquiring knowledge regarding how this package works in determining the asymptotic time complexity of a function with its parameters.I've gone through your github readme and thanks to the lucid write-up I was able to understand what the package does (with its motive) with its single function CompEst().
-However I intend to dive deeper as I intend to create a function which would classify linear, log linear and quadratic timings for a given function, returning a data frame with numeric columns (say N) and time taken (say T, in seconds). I only
-Although am relatively new to R (as 
