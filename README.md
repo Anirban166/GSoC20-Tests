@@ -1,4 +1,4 @@
-#Easy Test
+Easy Test
 ---
 Input : N=10(L) <br>
 Using autoplot: 
@@ -49,14 +49,20 @@ for (loopvariable in seq(1, length(Nvalues)))
   pdpa[loopvariable] <- s$mean[1]  
   cdpa[loopvariable] <- s$mean[2]
 }
-ggplot(data.frame(pdpa, cdpa, nval), aes(x=nval, y=cdpa)) + geom_line(color = 'red') 
+ggplot(data.frame(pdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_line(color = 'red') 
 + geom_line(y = pdpa, color='blue') + labs(x="N", y="Runtime") + scale_y_continuous(lim=c(0,10000))
 ```
 The difference in time is seen by the growth rate in plot (cDPA>PDPA), which at start however has a higher rate for PDPA: 
 <img src="Images/easytest_ggplot.png" width="100%">
 
-#Medium Test
+Medium Test
 ---
 
-#Hard Test
+Hard Test
 ---
+Package: testComplexity
+Install using : install.packages("testComplexity")
+
+Documentation: 
+
+Tests:(Rperform)
