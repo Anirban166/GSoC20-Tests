@@ -2,6 +2,7 @@ Easy Test
 ---
 Package dependencies: PeakSegDP, PeakSegOptimal and tidyverse. <br>
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
+
 (1) Using autoplot: <br>
 Case I: Using small dataset sizes: (N,N+10,N+20,N+30)
 ```
@@ -29,8 +30,10 @@ autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSe
 ```
 Output plot:
 <img src="Images/easytest_autoplot_smallN.png" width="100%">
-Microbenchmark computed values:
-<img src="Images/microbenchmark_smallset.png" width="75%">
+Microbenchmark computed values: <br>
+
+<img src="Images/microbenchmark_smallset.png" width="60%"> <br>
+
 We can infer from the above data that PeakSegPDPA is consuming more time than cDPA (reverse of actual complexity) for small values in the dataset. <br>
 
 Case II: Using large dataset sizes: (N,N+90,N+990,N+9990)
@@ -56,8 +59,10 @@ micrograph <- microbenchmark(fit1(),fit2(),fit3(),fit4(),fit5(),fit6(),fit7(),fi
 autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSegPDPA (log-linear)")
 ```
 <img src="Images/easytest_autoplot_largeN.png" width="100%">
-Microbenchmark computed values:
-<img src="Images/microbenchmark_largeset.png" width="75%">
+Microbenchmark computed values: <br>
+
+<img src="Images/microbenchmark_largeset.png" width="60%"> <br>
+
 From the data above we can infer that cDPA is consuming more time than PeakSegPDPA (which is expected) for a large values in the dataset. <br>
 The observations made above won't be noticeable if we used autoplot and directly jumped into a dataset with possibly more of large values, wherein only the expected trend in time complexity will be shown (and not the initial reverse trend) in the violin plots. <br>
 
