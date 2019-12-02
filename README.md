@@ -1,8 +1,8 @@
 Easy Test
 ---
-Package Dependencies: PeakSegDP, PeakSegOptimal and tidyverse. 
+Package dependencies: PeakSegDP, PeakSegOptimal and tidyverse. <br>
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
-(1) Using autoplot: 
+(1) Using autoplot: <br>
 Case I: Using small dataset sizes: (N,N+10,N+20,N+30)
 ```
 library(PeakSegDP)
@@ -30,8 +30,8 @@ autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSe
 Output plot:
 <img src="Images/easytest_autoplot_smallN.png" width="100%">
 Microbenchmark computed values:
-<img src="Images/microbenchmark_smallset.png" width="100%">
-We can infer from the above data that PeakSegPDPA is consuming more time than cDPA (reverse of actual complexity) for small values in the dataset.
+<img src="Images/microbenchmark_smallset.png" width="75%">
+We can infer from the above data that PeakSegPDPA is consuming more time than cDPA (reverse of actual complexity) for small values in the dataset. <br>
 
 Case II: Using large dataset sizes: (N,N+90,N+990,N+9990)
 ```
@@ -57,9 +57,9 @@ autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSe
 ```
 <img src="Images/easytest_autoplot_largeN.png" width="100%">
 Microbenchmark computed values:
-<img src="Images/microbenchmark_largeset.png" width="100%">
+<img src="Images/microbenchmark_largeset.png" width="75%">
 From the data above we can infer that cDPA is consuming more time than PeakSegPDPA (which is expected) for a large values in the dataset. <br>
-The observations made above won't be noticeable if we used autoplot and directly jumped into a dataset with possibly more of large values, wherein only the expected trend in time complexity will be shown (and not the initial reverse trend) in the violin plots. 
+The observations made above won't be noticeable if we used autoplot and directly jumped into a dataset with possibly more of large values, wherein only the expected trend in time complexity will be shown (and not the initial reverse trend) in the violin plots. <br>
 
 (2) Using ggplot:
 ```
@@ -88,7 +88,7 @@ ggplot(data.frame(peaksegpdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_li
 ```
 Output plot:
 <img src="Images/easytest_ggplot.png" width="100%">
-It is clear from the plot above that initially for small values of dataset sizes PDPA>cDPA, then it follows the estimated trend of cDPA>PDPA in terms of runtime complexity. 
+It is clear from the plot above that initially for small values of dataset sizes : PDPA>cDPA, then it follows the estimated trend of cDPA>PDPA in terms of runtime complexity. 
 Hence we can safely conclude that computation times of PeakSegDP::cDPA follow a greater time complexity (quadratic) as compared to PeakSegOptimal::PeakSegPDPA (log-linear) following the plot(s) obtained. 
 
 Medium Test
@@ -99,9 +99,10 @@ Function: asymptoticComplexityClass(DF$N, DF$T)
 
 Hard Test
 ---
-Package: testComplexity
-Install using : install.packages("testComplexity")
+Package name: testComplexity <br>
+Function(s): asymptoticComplexityClass <br>
+Install using : install.packages("testComplexity") <br>
 
-Documentation: 
 
-Tests:(Rperform)
+Documentation: In roxygen format. 
+Tests: Not done yet using Rperform.
