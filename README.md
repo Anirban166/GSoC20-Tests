@@ -1,6 +1,6 @@
 Easy Test
 ---
-Package dependencies: PeakSegDP, PeakSegOptimal and tidyverse. <br>
+Package dependencies: PeakSegDP, PeakSegOptimal, tidyverse (ggplot2) and microbenchmark. <br>
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
 
 (1) Using autoplot: <br>
@@ -24,7 +24,7 @@ fit6 <- function() PeakSegPDPA(rpois(N+20,N), max.segments=3L)
 fit7 <- function() cDPA(rpois(N+30,N), maxSegments=3)
 fit8 <- function() PeakSegPDPA(rpois(N+30,N), max.segments=3L)
 
-# The difference in time is observed at each alternate fit (cDPA>PDPA):
+# The difference in time is observed at each alternate fit (cDPA<PeakSegPDPA for this case):
 micrograph <- microbenchmark(fit1(),fit2(),fit3(),fit4(),fit5(),fit6(),fit7(),fit8())
 autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSegPDPA (log-linear)")
 ```
@@ -55,6 +55,7 @@ fit6 <- function() PeakSegPDPA(rpois(N+990,N), max.segments=3L)
 fit7 <- function() cDPA(rpois(N+9990,N), maxSegments=3)
 fit8 <- function() PeakSegPDPA(rpois(N+9990,N), max.segments=3L)
 
+# The difference in time is observed at each alternate fit (cDPA>PeakSegPDPA for this case):
 micrograph <- microbenchmark(fit1(),fit2(),fit3(),fit4(),fit5(),fit6(),fit7(),fit8())
 autoplot(micrograph,title="PeakSegDP::cDPA (quadratic) vs PeakSegOptimal::PeakSegPDPA (log-linear)")
 ```
@@ -100,16 +101,67 @@ Hence we can safely conclude that computation times of PeakSegDP::cDPA follow a 
 
 Medium Test
 ---
-Function: asymptoticComplexityClass(DF$N, DF$T) 
-#N = number of data, T = time in seconds
+Function Name: loglinearvsquadraticClassifier <br>
+Function Body/Definition:
+```
+loglinearvsquadraticClassifier<-function(f1,f2)
+{
+  f1name<-as.character(substitute(f1))
+  f2name<-as.character(substitute(f2))
 
+  if(f1name!=f2name)
+  {
+    cat("Among the two functions passed as parameters, (calculating..please wait)\n")
+
+    s <- summary(microbenchmark( f1(rpois(1000,10),rep(1,length(rpois(1000,10))),3L),f2(rpois(1000,10),rep(1,length(rpois(1000,10))),3L)))
+
+    if(s$mean[1]>s$mean[2])
+         cat(f1name,"follows quadratic time complexity whereas",f2name,"follows log-linear time complexity.")
+    else if(s$mean[1]<s$mean[2])
+         cat(f2name,"follows quadratic time complexity whereas",f1name,"follows log-linear time complexity.")
+  }
+  else print("both the functions cannot be same!")
+}
+```
+Examples: <br>
+<img src="Images/function_output.png" width="60%"> <br>
+This is just a preliminary function to comply with the test, classifying asymptotic time complexity of two functions (considering one of them follows a log-linear trend while the remaining follows a quadratic one) based on microbenchmark timings. <br>
+From the easy test I could figure out that from around N=1000 observations the trend is quadratic for the tested PeakSegDP::cDPA (and similar functions) and further tests by increasing the range would be unnecessary. (I started with a for loop ranging from N values 1e+01 to 1e+06 with two counters each for f1 and f2, with them incrementing by one if s$mean[1]>s$mean[2] and reverse for the later respectively, with f1/f2 being quadratic in nature if their respective count value is higher than the other - but that was unecessary since a single point i.e. at N=1000 itself there was a clear distinction of the quadratic trend remaining the same for higher N values, so thereafter I considered to use that point only) <br>
+
+However to classify on a broader range with all complexities taken into account (linear, log, cubic, exponential etc) we will require to loop through increasing sizes of data, and benchmark them accordingly - maybe through sampling of a model.
 
 Hard Test
 ---
 Package name: testComplexity <br>
-Function(s): asymptoticComplexityClass <br>
-Install using : install.packages("testComplexity") <br>
+Function(s): loglinearvsquadraticClassifier(function1,function2) <br>
+Documentation: (roxygen format) <br>
+```
+#' Preliminary function to distinguish between log-linear vs quadratic time complexity
+#' of two algorithms/functions with parameters :            count.vec,     <- integer vector of count data.
+#'                               weight.vec=rep(1, length(count.vec)),     <- numeric vector (same length as count.vec) of positive weights.
+#'                                                   and max.segments.     <- integer of length 1: maximum number of segments (must be >= 2, default value: 3).
+#'
+#' @title Log-linear vs Quadratic time complexity classifier
+#'
+#' @param f1 Function based on an algorithm which is known or expected to run at either log-linear or quadratic time complexity, different from that of f2.
+#' @param f2 Function based on an algorithm which is known or expected to run at either log-linear or quadratic time complexity, different from that of f1.
+#'
+#' @return This function does not return any value but a statement indicating which among the two is log-linear and which is quadratic in nature.
+#'
+#' @export
+#' @import microbenchmark
+#' @importFrom stats rpois
+```
+R CMD check() results:
+<img src="Images/rcmdcheck_pass.png" width="60%"> <br>
+Installation: <br>
+Might be prompted for updates: 
+<img src="Images/installupdates.png" width="60%"> <br>
+Successful installation and an example run:
+<img src="Images/packageinstallexample.png" width="60%"> <br>
+Install locally using : ```install.packages("testComplexity")``` <br>
+Install via Github (repository not linked yet) : ```if(!require(devtools))install.packages("devtools") devtools::install_github("Anirban166/RGSOC_20_Tests")``` <br>
+Tests: (using testthat) <br>
+<img src="Images/tests.png" width="60%"> <br>
 
-
-Documentation: (In roxygen format)
-Tests: Not done yet using Rperform.
+Thanks for reading! - Anirban
