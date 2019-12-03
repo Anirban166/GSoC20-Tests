@@ -152,15 +152,20 @@ Documentation: (roxygen format) <br>
 #' @import microbenchmark
 #' @importFrom stats rpois
 ```
-R CMD check() results:
-<img src="Images/rcmdcheck_pass.png" width="60%"> <br>
+R CMD check() results: <br>
+<img src="Images/rcmdcheck_pass.png" width="75%"> <br>
+
 Installation: <br>
-Might be prompted for updates: 
+Might be prompted for updates: <br>
 <img src="Images/installupdates.png" width="60%"> <br>
-Successful installation and an example run:
+Successful installation and an example run: <br>
 <img src="Images/packageinstallexample.png" width="60%"> <br>
-Install locally using : ```install.packages("testComplexity")``` <br>
-Install via Github (repository not linked yet) : ```if(!require(devtools))install.packages("devtools") devtools::install_github("Anirban166/RGSOC_20_Tests")``` <br>
+
+Install locally using : 
+```install.packages("testComplexity")``` <br>
+Install via Github using (repository not linked yet) : <br>
+```if(!require(devtools))install.packages("devtools") devtools::install_github("Anirban166/RGSOC_20_Tests")``` <br>
+
 Tests: (using testthat) <br>
 <img src="Images/tests.png" width="60%"> <br>
 
