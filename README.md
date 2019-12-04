@@ -25,7 +25,7 @@ for(loopvar in 1:4)
   #     "Mean values computed from microbenchmark for cDPA :",s$mean[2],"\n")
 }
 # plot the 4x3 data frame on a log-log scale: (log10) 
-ggplot(data.frame(peaksegpdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_line(color = 'red') + geom_line(y = peaksegpdpa, color='blue') + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_x_log10() + scale_y_log10() + scale_y_continuous(lim=c(0,10000))
+ggplot(data.frame(peaksegpdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_line(color = 'red') + geom_line(y = peaksegpdpa, color='blue') + labs(x="N", y="Runtime") + scale_x_log10() + scale_y_log10() + scale_y_continuous(lim=c(0,10000))
 # can use coord_trans(x="log2",y="log2") or continuous scale transform for log2 scale as well)
 ```
 Output plot: <br>
