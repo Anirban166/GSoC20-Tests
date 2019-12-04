@@ -2,7 +2,37 @@ Easy Test
 ---
 Package dependencies: PeakSegDP, PeakSegOptimal, tidyverse (ggplot2) and microbenchmark. <br>
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
+```
+library(PeakSegDP)
+library(PeakSegOptimal)
+library(ggplot2)
+library(microbenchmark)
 
+N <- readline(prompt="Enter size: ")
+N <- as.integer(N)
+
+Nvalues=c(N,N*10,N*100,N*1000)
+peaksegpdpa<-integer(4)
+cdpa<-integer(4)
+for(loopvar in 1:4)
+{
+  s<-summary(microbenchmark(PeakSegPDPA(rpois(Nvalues[loopvar],N), max.segments=3L),
+                            cDPA(rpois(Nvalues[loopvar],N), maxSegments=3)))
+  peaksegpdpa[loopvar] <- s$mean[1]
+  cdpa[loopvar]        <- s$mean[2]
+  # debug/check benchmark values with print statements below:
+  # cat("Mean values computed from microbenchmark for PeakSegPDPA :",s$mean[1],"\n",
+  #     "Mean values computed from microbenchmark for cDPA :",s$mean[2],"\n")
+}
+# plot the 4x3 data frame on a log-log scale: (log10) 
+ggplot(data.frame(peaksegpdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_line(color = 'red') + geom_line(y = peaksegpdpa, color='blue') + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_x_log10() + scale_y_log10() + scale_y_continuous(lim=c(0,10000))
+# can use coord_trans(x="log2",y="log2") or continuous scale transform for log2 scale as well)
+```
+Output plot: <br>
+<img src="Images/easyplot.png" width="100%">
+
+<details>
+<summary>Click here to view previous version of Easy Test</summary> 
 (1) Using autoplot: <br>
 Case I: Using small dataset sizes: (N,N+10,N+20,N+30)
 ```
@@ -98,6 +128,7 @@ Output plot:
 <img src="Images/easytest_ggplot.png" width="100%">
 It is clear from the plot above that initially for small values of dataset sizes : PDPA>cDPA. After that for larger dataset sizes it follows the estimated trend of cDPA>PDPA in terms of runtime complexity. 
 Hence we can safely conclude that computation times of PeakSegDP::cDPA follow a greater time complexity (quadratic) as compared to PeakSegOptimal::PeakSegPDPA (log-linear) taking into consideration the trend for large dataset sizes N following the plot(s) obtained. 
+</details>
 
 Medium Test
 ---
