@@ -33,6 +33,7 @@ Output plot: <br>
 
 <details>
 <summary>Click here to view previous version of Easy Test</summary> 
+  
 (1) Using autoplot: <br>
 Case I: Using small dataset sizes: (N,N+10,N+20,N+30)
 ```
@@ -128,6 +129,7 @@ Output plot:
 <img src="Images/easytest_ggplot.png" width="100%">
 It is clear from the plot above that initially for small values of dataset sizes : PDPA>cDPA. After that for larger dataset sizes it follows the estimated trend of cDPA>PDPA in terms of runtime complexity. 
 Hence we can safely conclude that computation times of PeakSegDP::cDPA follow a greater time complexity (quadratic) as compared to PeakSegOptimal::PeakSegPDPA (log-linear) taking into consideration the trend for large dataset sizes N following the plot(s) obtained. 
+
 </details>
 
 Medium Test
