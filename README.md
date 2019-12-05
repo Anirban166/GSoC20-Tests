@@ -55,7 +55,8 @@ algorithm$algorithm <- 1:nrow(algorithm)
 ggplot(algorithm, aes(x=algorithm,y=datasetsizes)) + geom_point(aes(color=algorithm)) + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
 ```
 Microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
-<img src="Images/microbenchmarkcomputedvalues.png" width="100%"> <br>
+<img src="Images/microbenchmarkcomputedvalues2.png" width="100%"> <br>
+
 Output Plot: <br>
 <img src="Images/easytestplotgeompoint.png" width="100%"> 
 
