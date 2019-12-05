@@ -1,6 +1,16 @@
 Easy Test
 ---
-Package dependencies: PeakSegDP, PeakSegOptimal, tidyverse (ggplot2) and microbenchmark. <br>
+Package dependencies: PeakSegDP, PeakSegOptimal, tidyverse (ggplot2), dplyr (data.table) and microbenchmark. <br>
+```
+Writing soon.
+```
+Output Plot: <br>
+
+<details>
+<summary>Click here to view previous versions of my submitted Easy Test</summary> 
+
+### First Revision: 
+
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
 ```
 library(PeakSegDP)
@@ -31,9 +41,8 @@ ggplot(data.frame(peaksegpdpa, cdpa, Nvalues), aes(x=Nvalues, y=cdpa)) + geom_li
 Output plot: <br>
 <img src="Images/easyplot.png" width="100%">
 
-<details>
-<summary>Click here to view previous version of Easy Test</summary> 
-  
+###Initial Submission:
+
 (1) Using autoplot: <br>
 Case I: Using small dataset sizes: (N,N+10,N+20,N+30)
 ```
