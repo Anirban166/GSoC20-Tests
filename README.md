@@ -90,12 +90,19 @@ Data table with dataset sizes, condition (classification/distinction between Pea
 <img src="Images/microbenchmarkdataeasytest.png" width="100%"> <br>
 
 Output Plots: <br>
+(i) Dataset size vs min: <br>
 <img src="Images/min.png" width="100%"> <br>
+(ii) Dataset size vs lq: <br>
 <img src="Images/lq.png" width="100%"> <br>
+(iii) Dataset size vs mean: <br>
 <img src="Images/mean.png" width="100%"> <br>
+(iv) Dataset size vs median: <br>
 <img src="Images/median.png" width="100%"> <br>
+(v) Dataset size vs uq: <br>
 <img src="Images/uq.png" width="100%"> <br>
+(i) Dataset size vs max: <br>
 <img src="Images/max.png" width="100%"> <br>
+The previously noted observation can be inferred from each. (PeakSegPDPA>cDPA for the start, then cDPA>PeakSegPDPA for greater dataset sizes which shows the actual complexity trend.
 
 <details>
 <summary>Click here to view previous versions of my submissions to the Easy Test</summary> 
