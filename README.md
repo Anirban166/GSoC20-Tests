@@ -1,7 +1,62 @@
 Easy Test
 ---
 Package dependencies: PeakSegDP, PeakSegOptimal, tidyverse (ggplot2), dplyr (data.table) and microbenchmark. <br>
-### Second Revision:
+
+### Second Revision: 
+```
+library(PeakSegDP)
+library(PeakSegOptimal)
+library(microbenchmark)
+library(ggplot2)
+require(dplyr)
+library(data.table)
+
+datasetsizes<-c(10^seq(1,4,by=0.5))
+l <- length(datasetsizes)
+
+# Vector with conditions:
+conds <- c("PeakSegPDPA", "cDPA")
+
+# Make a data frame with datasetsizes
+dat <- data.frame(
+  datasetsizes = rep(datasetsizes, each = length(conds)), # make replicates for each condition
+  cond = rep(NA, l*length(conds))
+                 )
+                 
+dat[, c("min", "lq", "mean", "median", "uq", "max")] <- 0
+dat$cond <- factor(dat$cond, levels = conds)
+
+# debug statement/check for required data table format:
+# head(dat)
+
+for(i in 1:l)
+{ 
+     s <- summary(microbenchmark(
+    "PeakSegPDPA" = PeakSegPDPA(rpois(datasetsizes[i],10),max.segments=3L),
+    "cDPA" = cDPA(rpois(datasetsizes[i],10),maxSegments=3)
+                                 ))
+
+  dat[which(dat$datasetsizes == datasetsizes[i]), # selecting rows of current dataset size.
+      c("cond", "min", "lq", "mean", "median", "uq", "max")] <- s[, !colnames(s)%in%c("neval")] # excluding expr and neval columns. 
+}
+
+# Converting data frame into a data table for plotting:
+dat <- data.table(dat)
+
+# Plotting with aesthetic mapping of datasetsizes by mean and using both point and line geometry on a log-log scale:
+ggplot(dat, aes(x=datasetsizes,y=mean)) +
+  geom_point(aes(color = cond)) +
+  geom_line(aes(color = cond)) + # added to see a clear difference between conditions.
+  labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') +
+  scale_y_continuous(trans = 'log10')
+```
+Data table with dataset sizes, condition (classification between PeakSegPDPA and cDPA) and microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
+<img src="Images/microbenchmarkdataeasytest.png" width="100%"> <br>
+
+Output Plot: <br>
+<img src="Images/perfecteasytest.png" width="100%"> 
+
+Starting raw code: (Ignore)
 ```
 library(PeakSegDP)
 library(PeakSegOptimal)
