@@ -11,18 +11,20 @@ library(ggplot2)
 require(dplyr)
 library(data.table)
 
+# Intializing data set sizes as required:
 datasetsizes<-c(10^seq(1,4,by=0.5))
 l <- length(datasetsizes)
 
-# Vector with conditions:
+# Condition vector to categorize/classify between PeakSegPDPA and cDPA (or for any another algorithm based function as well):
 conds <- c("PeakSegPDPA", "cDPA")
 
-# Make a data frame with datasetsizes
+# Making a data frame which assigns dataset size (1:7) and creates replicates:
 dat <- data.frame(
-  datasetsizes = rep(datasetsizes, each = length(conds)), # make replicates for each condition
+  datasetsizes = rep(datasetsizes, each = length(conds)), # make replicates for each condition (algo based function).
   cond = rep(NA, l*length(conds))
                  )
-                 
+
+# Adding parameters (microbenchmark ones) and initializing them to zero for the start:                
 dat[, c("min", "lq", "mean", "median", "uq", "max")] <- 0
 dat$cond <- factor(dat$cond, levels = conds)
 
@@ -37,83 +39,63 @@ for(i in 1:l)
                                  ))
 
   dat[which(dat$datasetsizes == datasetsizes[i]), # selecting rows of current dataset size.
-      c("cond", "min", "lq", "mean", "median", "uq", "max")] <- s[, !colnames(s)%in%c("neval")] # excluding expr and neval columns. 
+  c("cond", "min", "lq", "mean", "median", "uq", "max")] <- s[, !colnames(s)%in%c("neval")] # excluding expr and neval columns. 
 }
 
-# Converting data frame into a data table for plotting:
+# Converting our data frame into a data table for plotting:
 dat <- data.table(dat)
 
-# Plotting with aesthetic mapping of datasetsizes by mean and using both point and line geometry on a log-log scale:
-ggplot(dat, aes(x=datasetsizes,y=mean)) +
-  geom_point(aes(color = cond)) +
-  geom_line(aes(color = cond)) + # added to see a clear difference between conditions.
-  labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') +
-  scale_y_continuous(trans = 'log10')
+# Plotting: (for all 6 values using both point and line geometry on a log-log scale)
+# (i) Plotting with aesthetic mapping of datasetsizes by min:
+ggplot(dat, aes(x=datasetsizes,y=min)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+ 
+# (ii) Plotting with aesthetic mapping of datasetsizes by lq:
+ggplot(dat, aes(x=datasetsizes,y=lq)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+
+# (iii) Plotting with aesthetic mapping of datasetsizes by mean:
+ggplot(dat, aes(x=datasetsizes,y=mean)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+
+# (iv) Plotting with aesthetic mapping of datasetsizes by median:
+ggplot(dat, aes(x=datasetsizes,y=median)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+ 
+# (v) Plotting with aesthetic mapping of datasetsizes by uq:
+ggplot(dat, aes(x=datasetsizes,y=uq)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+ 
+# (vi) Plotting with aesthetic mapping of datasetsizes by max:
+ggplot(dat, aes(x=datasetsizes,y=max)) 
+ + geom_point(aes(color = cond)) 
+ + geom_line(aes(color = cond))  # added to see a clear difference between conditions.
+ + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10') 
 ```
-Data table with dataset sizes, condition (classification between PeakSegPDPA and cDPA) and microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
+Apart from your suggestions I also thought it would be better to generalize every part of the code. Hence instead of making seperate vectors each to hold values for (min..max) and then extracting each parameter seperately into them (which I did initially), I created a data frame before entering the loop and set the dataset sizes along with a condition vector with replicates x2 for holding data for both cDPA and PeakSegPDPA and to classify among them for ease in plotting. Then I added column vectors (min<->max) to my data frame and initialized them to 0. Then I factored out the data frame into levels based on my condition vector (conds). <br>
+Now coming to the for loop I did the usual required calculation via microbenchmark, but placed PeakSegPDPA and cDPA computed values differently based on conds. Then I selected the rows from each iteration and from the summary of microbenchmark (which includes expr, min..max, neval) I removed expr and neval for obvious reasons and collected the required parameters (min<->max, along with condition vector PeakSegPDPA/cDPA) into my data frame. <br>
+Then I converted that data frame into a data table as you suggested and plotted the dataset size against the parameters accordingly. I used a geom_line as well apart from the geom_point. 
+
+Data table with dataset sizes, condition (classification/distinction between PeakSegPDPA and cDPA) and microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
 <img src="Images/microbenchmarkdataeasytest.png" width="100%"> <br>
 
-Output Plot: <br>
-<img src="Images/perfecteasytest.png" width="100%"> 
-
-Starting raw code: (Ignore)
-```
-library(PeakSegDP)
-library(PeakSegOptimal)
-library(microbenchmark)
-library(ggplot2)
-require(dplyr)
-library(data.table)
-
-datasetsizes<-c(10^seq(1,4,by=0.5))
-
-peaksegpdpa_min<-integer(length(datasetsizes))
-peaksegpdpa_lq<-integer(length(datasetsizes))
-peaksegpdpa_mean<-integer(length(datasetsizes))
-peaksegpdpa_median<-integer(length(datasetsizes))
-peaksegpdpa_uq<-integer(length(datasetsizes))
-peaksegpdpa_max<-integer(length(datasetsizes))
-
-cdpa_min<-integer(length(datasetsizes))
-cdpa_lq<-integer(length(datasetsizes))
-cdpa_mean<-integer(length(datasetsizes))
-cdpa_median<-integer(length(datasetsizes))
-cdpa_uq<-integer(length(datasetsizes))
-cdpa_max<-integer(length(datasetsizes))
-
-for(loopvar in 1:(length(datasetsizes)))
-{
-  s<-summary(microbenchmark(PeakSegPDPA(rpois(datasetsizes[loopvar],10), max.segments=3L),cDPA(rpois(datasetsizes[loopvar],10), maxSegments=3)))
-
-  peaksegpdpa_min[loopvar]    <- s$min[1]
-  cdpa_min[loopvar]           <- s$min[2]
-  peaksegpdpa_lq[loopvar]     <- s$lq[1]
-  cdpa_lq[loopvar]            <- s$lq[2]
-  peaksegpdpa_mean[loopvar]   <- s$mean[1]
-  cdpa_mean[loopvar]          <- s$mean[2]
-  peaksegpdpa_median[loopvar] <- s$median[1]
-  cdpa_median[loopvar]        <- s$median[2]
-  peaksegpdpa_uq[loopvar]     <- s$uq[1]
-  cdpa_uq[loopvar]            <- s$uq[2]
-  peaksegpdpa_max[loopvar]    <- s$max[1]
-  cdpa_max[loopvar]           <- s$max[2]
-}
-
-algorithm<-data.table( peaksegpdpa_min, cdpa_min,
-                       peaksegpdpa_lq, cdpa_lq,
-                       peaksegpdpa_mean, cdpa_mean, peaksegpdpa_median, cdpa_median,
-                       peaksegpdpa_uq, cdpa_uq,
-                       peaksegpdpa_max, cdpa_max, datasetsizes)
-                       
-algorithm$algorithm <- 1:nrow(algorithm)
-
-ggplot(algorithm, aes(x=algorithm,y=datasetsizes)) + geom_point(aes(color=algorithm)) + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
-```
-Microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
-<img src="Images/microbenchmarkcomputedvalues2.png" width="100%"> <br>
-
-Output Plot: <br>
-<img src="Images/easytestplotgeompoint.png" width="100%"> 
+Output Plots: <br>
+<img src="Images/min.png" width="100%"> <br>
+<img src="Images/lq.png" width="100%"> <br>
+<img src="Images/mean.png" width="100%"> <br>
+<img src="Images/median.png" width="100%"> <br>
+<img src="Images/uq.png" width="100%"> <br>
+<img src="Images/max.png" width="100%"> <br>
 
 <details>
 <summary>Click here to view previous versions of my submissions to the Easy Test</summary> 
