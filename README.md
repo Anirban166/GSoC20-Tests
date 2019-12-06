@@ -51,7 +51,7 @@ Output Plot: <br>
 
 Data from microbenchmark: <br>
 Initially when I ran ```> combinator``` it showed uptil obs. 333 with ```[ reached 'max' / getOption("max.print") -- omitted 267 rows ]``` at the end. <br>
-So I checked getOption("max.print") which returned 1000, so I figured if I get 333 obs.for 1000, 5000 should be a safe number to print 1400 obs. and so I set my max print accordingly: ```options(max.print=5000)```
+Going by the statement I checked ```getOption("max.print")``` which returned 1000, so I figured if I get 333 obs.for 1000, 5000 should be a safe number to print 1400 obs. and so I set my max print accordingly: ```options(max.print=5000)```
 And here is the complete data from microbenchmark with dataset size appended to it: (Super long!)
 ```
 > combinator
