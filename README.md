@@ -35,7 +35,7 @@ for(i in 1:l)
 #dt <- data.table(combinator)
 
 # Plot as per suggestion (3):
-# data frame (combinator) , mapping = datasetsize vs time , geometry = point (+line) based on algorithm (PeakSegPDPA/cDPA)
+# data table (combinator) , mapping = datasetsize vs time , geometry = point (+line) based on algorithm (PeakSegPDPA/cDPA)
 ggplot(combinator, aes(x=datasetsize,y=time)) + geom_point(aes(color = expr)) + geom_line(aes(color = expr)) + labs(x="N", y="Runtime") + scale_x_log10() + scale_y_log10()
 ```
 Here's my idea: We know that the data frame returned by microbenchmark is a 200x2 one (with expr and time being the 2 variables), and since its already a data frame from which we need all the columns (unlike the previous case, when I needed to exclude neval), there isn't a need to change that and instead I should just append the dataset size to them for plotting purposes. <br>
@@ -44,7 +44,7 @@ I found that it would be easier to just append each data frame collected in s to
 Then I append the dataset size column to that as combinator would be a 200x3 dataframe (expr,time,datasetsizes). This condition of adding the datasetsize column is there for every iteration since s is 200x2 as returned by microbenchmark. <br>
 After the first iteration I use rbind to join the corresponding 200x3 data frames for different data set sizes together.
 Hence the final result would be a (200x7)x3 or 1400x3 data frame. (7 dataset sizes) <br>
-Lastly I did the plotting with dataset vs microbenchmark timings, distinguished by expr which I set to PeakSegPDPA and cDPA inside the microbenchmark catering to respective algorithm calls (just like last revision). 
+Lastly I did the plotting with the dataset as a dataframe vs microbenchmark timings, distinguished by expr which I set to PeakSegPDPA and cDPA inside the microbenchmark catering to respective algorithm calls (just like last revision). 
 
 Output Plot: <br>
 <img src="Images/finalplot.png" width="100%"> <br>
