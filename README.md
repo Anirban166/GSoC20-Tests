@@ -44,7 +44,7 @@ I found that it would be easier to just append each data frame collected in s to
 Then I append the dataset size column to that as combinator would be a 200x3 dataframe (expr,time,datasetsizes). This condition of adding the datasetsize column is there for every iteration since s is 200x2 as returned by microbenchmark. <br>
 After the first iteration I use rbind to join the corresponding 200x3 data frames for different data set sizes together.
 Hence the final result would be a (200x7)x3 or 1400x3 data frame. (7 dataset sizes) <br>
-Lastly I did the plotting with the dataset as a dataframe vs microbenchmark timings, distinguished by expr which I set to PeakSegPDPA and cDPA inside the microbenchmark catering to respective algorithm calls (just like last revision). 
+Lastly I did the plotting with the dataframe as a datatable vs microbenchmark timings, distinguished by expr which I set to PeakSegPDPA and cDPA inside the microbenchmark catering to respective algorithm calls (just like last revision). 
 
 Output Plot: <br>
 <img src="Images/finalplot.png" width="100%"> <br>
