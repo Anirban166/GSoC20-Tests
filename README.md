@@ -39,7 +39,7 @@ for(i in 1:l)
                                  ))
 
   dat[which(dat$datasetsizes == datasetsizes[i]), # selecting rows of current dataset size.
-  c("cond", "min", "lq", "mean", "median", "uq", "max")] <- s[, !colnames(s)%in%c("neval")] # excluding expr and neval columns. 
+  c("cond", "min", "lq", "mean", "median", "uq", "max")] <- s[, !colnames(s)%in%c("neval")] # excluding neval column and expr->cond. 
 }
 
 # Converting our data frame into a data table for plotting:
