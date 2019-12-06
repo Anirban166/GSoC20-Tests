@@ -20,15 +20,15 @@ for(i in 1:l)
     "PeakSegPDPA" = PeakSegPDPA(rpois(datasetsizes[i],10),max.segments=3L),
     "cDPA" = cDPA(rpois(datasetsizes[i],10),maxSegments=3)))
 
-     if(i==1) # for the start we'll need to give some value to  
+     if(i==1) # for the first iteration we append datasetsize as the third column to s and initialize combinator as s: 
      {  
         s$datasetsize<-datasetsizes[i]
         combinator<-s
      }
-     
+     # we must add/append datasetsize to other data frames as well: (in order to plot datasetsize vs time from resulting data frame)
      s$datasetsize<-datasetsizes[i] # add datasetsize
       
-     if(i!=1)
+     if(i!=1) # bind/combine all data frames after to combinator (final data frame) - gets +200x2 obs per iteration.
      {  combinator<-rbind(combinator,s) }
 }
 
