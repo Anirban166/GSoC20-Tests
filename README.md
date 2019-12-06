@@ -1563,6 +1563,65 @@ The previously noted observation can be inferred from each. (PeakSegPDPA>cDPA fo
 <details>
 <summary>Click here to view previous versions of my submissions to the Easy Test</summary> 
 
+Initial setup for second revision: (kept for my reference)
+```
+library(PeakSegDP)
+library(PeakSegOptimal)
+library(microbenchmark)
+library(ggplot2)
+require(dplyr)
+library(data.table)
+
+datasetsizes<-c(10^seq(1,4,by=0.5))
+
+peaksegpdpa_min<-integer(length(datasetsizes))
+peaksegpdpa_lq<-integer(length(datasetsizes))
+peaksegpdpa_mean<-integer(length(datasetsizes))
+peaksegpdpa_median<-integer(length(datasetsizes))
+peaksegpdpa_uq<-integer(length(datasetsizes))
+peaksegpdpa_max<-integer(length(datasetsizes))
+
+cdpa_min<-integer(length(datasetsizes))
+cdpa_lq<-integer(length(datasetsizes))
+cdpa_mean<-integer(length(datasetsizes))
+cdpa_median<-integer(length(datasetsizes))
+cdpa_uq<-integer(length(datasetsizes))
+cdpa_max<-integer(length(datasetsizes))
+
+for(loopvar in 1:(length(datasetsizes)))
+{
+  s<-summary(microbenchmark(PeakSegPDPA(rpois(datasetsizes[loopvar],10), max.segments=3L),cDPA(rpois(datasetsizes[loopvar],10), maxSegments=3)))
+
+  peaksegpdpa_min[loopvar]    <- s$min[1]
+  cdpa_min[loopvar]           <- s$min[2]
+  peaksegpdpa_lq[loopvar]     <- s$lq[1]
+  cdpa_lq[loopvar]            <- s$lq[2]
+  peaksegpdpa_mean[loopvar]   <- s$mean[1]
+  cdpa_mean[loopvar]          <- s$mean[2]
+  peaksegpdpa_median[loopvar] <- s$median[1]
+  cdpa_median[loopvar]        <- s$median[2]
+  peaksegpdpa_uq[loopvar]     <- s$uq[1]
+  cdpa_uq[loopvar]            <- s$uq[2]
+  peaksegpdpa_max[loopvar]    <- s$max[1]
+  cdpa_max[loopvar]           <- s$max[2]
+}
+
+algorithm<-data.table( peaksegpdpa_min, cdpa_min,
+                       peaksegpdpa_lq, cdpa_lq,
+                       peaksegpdpa_mean, cdpa_mean, peaksegpdpa_median, cdpa_median,
+                       peaksegpdpa_uq, cdpa_uq,
+                       peaksegpdpa_max, cdpa_max, datasetsizes)
+                       
+algorithm$algorithm <- 1:nrow(algorithm)
+
+ggplot(algorithm, aes(x=algorithm,y=datasetsizes)) + geom_point(aes(color=algorithm)) + labs(x="N", y="Runtime") + scale_x_continuous(trans = 'log10') + scale_y_continuous(trans = 'log10')
+```
+Microbenchmark computed values (min, lq, mean, median, uq, max) for reference: <br>
+<img src="Images/microbenchmarkcomputedvalues2.png" width="100%"> <br>
+
+Output Plot: <br>
+<img src="Images/easytestplotgeompoint.png" width="100%">  <br>
+
 ### First Revision: 
 
 Input: N=10 (lambda/mean for rpois values set to N(L) as well) <br>
