@@ -28,7 +28,7 @@ for(i in 1:l)
      # we must add/append datasetsize to other data frames as well: (in order to plot datasetsize vs time from resulting data frame)
      s$datasetsize<-datasetsizes[i] # add datasetsize
       
-     if(i!=1) # bind/combine all data frames after to combinator (final data frame) - gets +200x2 obs per iteration.
+     if(i!=1) # bind/combine all data frames after first iteration to combinator (final data frame) - gets +200x2 obs per iteration.
      {  combinator<-rbind(combinator,s) }
 }
 
@@ -38,7 +38,7 @@ for(i in 1:l)
 # data frame (combinator) , mapping = datasetsize vs time , geometry = point (+line) based on algorithm (PeakSegPDPA/cDPA)
 ggplot(combinator, aes(x=datasetsize,y=time)) + geom_point(aes(color = expr)) + geom_line(aes(color = expr)) + labs(x="N", y="Runtime") + scale_x_log10() + scale_y_log10()
 ```
-Here's my idea: We know that the data frame returned by microbenchmark is a 200x2 one (with expr and time being the 2 variables), and since its already a data frame from which we need all the columns, there isn't a need to change that and instead I should just append the dataset size to them for plotting purposes. <br>
+Here's my idea: We know that the data frame returned by microbenchmark is a 200x2 one (with expr and time being the 2 variables), and since its already a data frame from which we need all the columns (unlike the previous case, when I needed to exclude neval), there isn't a need to change that and instead I should just append the dataset size to them for plotting purposes. <br>
 Now the looping part - for one iteration we would only get one data frame (stored in s) and for multiple iterations we will need an array of data frames i.e. a list using which when I tried the code became a bit messy and I eventually dropped the idea trying to think of a simpler solution. <br>
 I found that it would be easier to just append each data frame collected in s to consecutive iterations - something which rbind() can do. After this point it was relatively simple - I took a dataframe by the name of 'combinator' and for the first iteration I simply had the data in s collected to it (i.e. the first 200 obs. from dataset size 10) for the purpose of initializing combinator size. (since I didn't explicitly declare it outside) <br>
 Then I append the dataset size column to that as combinator would be a 200x3 dataframe (expr,time,datasetsizes). This condition of adding the datasetsize column is there for every iteration since s is 200x2 as returned by microbenchmark. <br>
